@@ -30,6 +30,19 @@ namespace InnDeep.Util
         {
             return (rhs.x == lhs.x && rhs.y == lhs.y);
         }
+
+        public static bool operator!=(Vector2i rhs, Vector2i lhs)
+        {
+            return (rhs.x != lhs.x || rhs.y != lhs.y);
+        }
+
+        public static Vector2i zero
+        {
+            get
+            {
+                return new Vector2i(0, 0);
+            }
+        }
     }
 
     public class ConvertSpace

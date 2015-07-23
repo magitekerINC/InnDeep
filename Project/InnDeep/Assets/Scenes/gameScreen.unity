@@ -116,12 +116,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 146578, guid: a424d0b212fbf86489ff54ac96c43d41, type: 2}
-  tileArea:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 100
-    height: 200
+  rows: 50
+  cols: 50
+  tileSheet: {fileID: 11400000, guid: 7c528ef1f5f0cfa4e9ad729416e9641d, type: 2}
 --- !u!114 &1113435860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4443b8db74bda8443a2e2ed903504160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tSystem: {fileID: 1113435859}
+  tileSystem: {fileID: 1113435859}
 --- !u!4 &1113435861
 Transform:
   m_ObjectHideFlags: 0

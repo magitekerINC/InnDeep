@@ -7,18 +7,15 @@ using InnDeep.Config;
 namespace InnDeep.Game
 {
 #if UNITY_EDITOR
-    [ExecuteInEditMode]
+    //[ExecuteInEditMode]
 #endif
-
     public class TileSystem : MonoBehaviour
     {
 
         #region Fields
         [SerializeField]
         private GameObject tilePrefab;
-        [SerializeField]
         private Rect tileArea;
-        [SerializeField]
         private Bounds bounds;
 
         [SerializeField]
@@ -26,6 +23,7 @@ namespace InnDeep.Game
         private List<SpriteRenderer> tiles;
         private int[,] tileData;
 
+        [SerializeField]
         private TileSheet tileSheet;
         #endregion
 
@@ -58,6 +56,7 @@ namespace InnDeep.Game
                 for(int y=0; y < rows; ++y)
                 {
                     var gObj = Instantiate(tilePrefab, pos, Quaternion.identity) as GameObject;
+                    gObj.transform.parent = transform;
                     tiles.Add(gObj.GetComponent<SpriteRenderer>());
                     tileData[x, y] = 1;
                     pos.y += TileHeight;
@@ -132,9 +131,15 @@ namespace InnDeep.Game
 
         private void ClearTiles()
         {
+            if (tiles == null || tiles.Count == 0)
+                return;
+
             for(int i=0; i < tiles.Count; ++i)
             {
+
+
                 Destroy(tiles[i].gameObject);
+
             }
         }
         #endregion
@@ -159,7 +164,6 @@ namespace InnDeep.Game
                 return;
             }
 
-            ClearTiles();
             bounds = sRender.bounds;
 
             if (rows < 0)
@@ -168,7 +172,7 @@ namespace InnDeep.Game
                 cols = 0;
 
             tileArea = new Rect(0, 0, TileWidth * cols, TileHeight * rows);
-            SetupTiles();
+           
         }
 
 
