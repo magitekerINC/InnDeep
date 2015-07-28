@@ -7,7 +7,6 @@ namespace InnDeep.Config
     public class TileSheet : ScriptableObject
     {
 
-        public int sheetID;
         public Sprite bottomRight;
         public Sprite bottomMid;
         public Sprite bottomLeft;

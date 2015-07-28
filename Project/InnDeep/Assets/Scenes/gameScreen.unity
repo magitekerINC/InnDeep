@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileSystem: {fileID: 1113435859}
+  gValues: {fileID: 0}
 --- !u!4 &1113435861
 Transform:
   m_ObjectHideFlags: 0

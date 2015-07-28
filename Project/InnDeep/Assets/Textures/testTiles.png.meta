@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 0ee5f9f57238ab14db373362357bd51d
-timeCreated: 1437642240
+timeCreated: 1438037194
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -31,7 +31,7 @@ TextureImporter:
     21300048: dungeon_bm
     21300050: dungeon_bl
     21300052: dungeon_tb
-    21300054: testTiles_right
+    21300054: dungon_right
     21300056: dungeon_left
     21300058: dungeon_lr
     21300060: none
@@ -350,7 +350,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: testTiles_right
+    - name: dungon_right
       rect:
         serializedVersion: 2
         x: 0

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 
 namespace InnDeep.Util
 {
+
     public struct Vector2i
     {
         public int x;
@@ -42,6 +44,16 @@ namespace InnDeep.Util
             {
                 return new Vector2i(0, 0);
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
         }
     }
 
@@ -96,4 +108,19 @@ namespace InnDeep.Util
         }
     }
 
+    public static class Extents
+    {
+        public static bool ContainsRect(this Rect rhs, Rect lhs)
+        {
+            return rhs.Contains(lhs.center) &&
+                rhs.Contains(lhs.max) &&
+                rhs.Contains(lhs.min);
+        }
+
+        public static Vector2 Add(this Vector2 rhs, Vector3 lhs)
+        {
+            return new Vector2(rhs.x + lhs.x, rhs.y + lhs.y);
+        }
+      
+    }
 }

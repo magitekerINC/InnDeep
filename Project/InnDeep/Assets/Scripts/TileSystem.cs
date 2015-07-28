@@ -3,9 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using InnDeep.Util;
 using InnDeep.Config;
+using System.IO;
+using System.Collections;
 
 namespace InnDeep.Game
 {
+    public struct TileData
+    {
+        public int value;
+        public int sheetIndex;
+        public TileData(int _val, int _index)
+        {
+            value = _val;
+            sheetIndex = _index;
+        }
+    }
 #if UNITY_EDITOR
     //[ExecuteInEditMode]
 #endif
@@ -16,15 +28,18 @@ namespace InnDeep.Game
         [SerializeField]
         private GameObject tilePrefab;
         private Rect tileArea;
+        public Rect Area { get { return tileArea; } }
         private Bounds bounds;
 
         [SerializeField]
         private int rows, cols;
+        [SerializeField]
+        private int groundLevel;
         private List<SpriteRenderer> tiles;
-        private int[,] tileData;
+        private TileData[,] tileData;
 
         [SerializeField]
-        private TileSheet tileSheet;
+        private TileSheet[] tileSheet;
         #endregion
 
         #region Properties
@@ -34,18 +49,28 @@ namespace InnDeep.Game
 
         void Awake()
         {
-            tiles = new List<SpriteRenderer>(rows * cols);
+            //tiles = new List<SpriteRenderer>(rows * cols);
         }
 
         void Start()
         {
+            //SetupTiles();
+        }
+
+        public void StartTileSystem()
+        {
 
         }
 
+        public void LoadTileSystem()
+        {
+
+        }
+        
         #region Tile Functions
         private void SetupTiles()
         {
-            tileData = new int[cols, rows];
+            tileData = new TileData[cols, rows];
             var pos = new Vector3(tileArea.xMin, tileArea.yMin);
 
             pos.x += TileWidth * 0.5f;
@@ -56,9 +81,11 @@ namespace InnDeep.Game
                 for(int y=0; y < rows; ++y)
                 {
                     var gObj = Instantiate(tilePrefab, pos, Quaternion.identity) as GameObject;
+                    gObj.name = tilePrefab.name + x + y;
                     gObj.transform.parent = transform;
                     tiles.Add(gObj.GetComponent<SpriteRenderer>());
-                    tileData[x, y] = 1;
+                    tileData[x, y] = new TileData(1,
+                        (y > groundLevel? 0 : 1));
                     pos.y += TileHeight;
                 }
                 pos.x += TileWidth;
@@ -74,9 +101,11 @@ namespace InnDeep.Game
             {
                 for(int y=0; y < rows; ++y)
                 {
-                    tileData[x, y] = getTileValue(x, y);
+                    tileData[x, y].value = getTileValue(x, y);
                 }
             }
+
+            setTileSprites();
         }
 
         private void setTileSprites()
@@ -89,7 +118,7 @@ namespace InnDeep.Game
                 for(int y=0; y < rows; ++y)
                 {
                     var ind = ConvertSpace.tileToIndex(x, y, rows, cols);
-                    tiles[ind].sprite = tileSheet.getTile(tileData[x, y]);
+                    tiles[ind].sprite = tileSheet[tileData[x,y].sheetIndex].getTile(tileData[x, y].value);
                 }
             }
         }
@@ -97,29 +126,34 @@ namespace InnDeep.Game
         private int getTileValue(int x, int y)
         {
             int result = 0;
+            var index = tileData[x, y].sheetIndex;
 
-            if (tileData[x, y] > 0)
+            if (tileData[x, y].value > 0)
             {
                 if (y - 1 >= 0 &&
-                    tileData[x, y - 1] != 0)
+                    index == tileData[x,y-1].sheetIndex &&
+                    tileData[x, y - 1].value != 0)
                 {
                     result += 2;
                 }
 
                 if (x - 1 >= 0 &&
-                    tileData[x - 1, y] != 0)
+                    index == tileData[x-1,y].sheetIndex &&
+                    tileData[x - 1, y].value != 0)
                 {
                     result += 16;
                 }
 
                 if (y + 1 < rows &&
-                    tileData[x, y + 1] != 0)
+                    index == tileData[x,y+1].sheetIndex &&
+                    tileData[x, y + 1].value != 0)
                 {
                     result += 8;
                 }
 
                 if (x + 1 < cols &&
-                    tileData[x + 1, y] != 0)
+                    index == tileData[x+1,y].sheetIndex &&
+                    tileData[x + 1, y].value != 0)
                 {
                     result += 4;
                 }
@@ -149,7 +183,7 @@ namespace InnDeep.Game
             return tileArea.Contains(pos);
         }
 
-
+        
 
 #if UNITY_EDITOR
         void OnValidate()
@@ -172,7 +206,7 @@ namespace InnDeep.Game
                 cols = 0;
 
             tileArea = new Rect(0, 0, TileWidth * cols, TileHeight * rows);
-           
+            groundLevel = Mathf.Min(groundLevel, rows);
         }
 
 
@@ -183,7 +217,7 @@ namespace InnDeep.Game
                 return;
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(tileArea.center, tileArea.size);
-            Gizmos.color = Color.white;
+            Gizmos.color = Color.grey;
             DrawGrid();
         }
 
@@ -198,13 +232,13 @@ namespace InnDeep.Game
             Vector3 hFrom = new Vector3(tileArea.xMin, tileArea.yMin);
             Vector3 hTo = new Vector3(tileArea.xMax, tileArea.yMin);
 
-            for(int x=0; x < rows; ++x)
+            for(int x=0; x <= rows; ++x)
             {
                 Gizmos.DrawLine(hFrom, hTo);
                 hFrom.y = hTo.y += bounds.size.y;
             }
 
-            for(int y=0; y < cols; ++y)
+            for(int y=0; y <= cols; ++y)
             {
                 Gizmos.DrawLine(vFrom, vTo);
                 vFrom.x = vTo.x += bounds.size.x;
