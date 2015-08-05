@@ -33,7 +33,8 @@ namespace InnDeep.Game
         // Use this for initialization
         void Start()
         {
-
+            tileSystem.StartTileSystem();
+            cControls.World = tileSystem.Area;
         }
 
 

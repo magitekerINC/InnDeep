@@ -112,8 +112,7 @@ namespace InnDeep.Util
     {
         public static bool ContainsRect(this Rect rhs, Rect lhs)
         {
-            return rhs.Contains(lhs.center) &&
-                rhs.Contains(lhs.max) &&
+            return rhs.Contains(lhs.max) &&
                 rhs.Contains(lhs.min);
         }
 

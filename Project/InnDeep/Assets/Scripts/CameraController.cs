@@ -25,12 +25,10 @@ namespace InnDeep.Game
         [Range(1f, 20f)]
         private float fSpeed = 1f;
 
-        [SerializeField]
-        [Range(-20f, -1f)]
-        private float minZoom = -1f, maxZoom = -10f;
+        private const float MINZOOM = -1f, MAXZOOM = -10f;
         private float targetZoom;
-
         private Vector3 targetPos;
+
         #region Properties
         public Rect World { set { world = value; } }
         public Vector3 Position { get { return tCamera.position; } }
@@ -43,7 +41,7 @@ namespace InnDeep.Game
             tCamera = transform;
             frustrum = Camera.main.pixelRect;
             frustrum.size = frustrum.size * (1 / 30f);
-
+            frustrum.center = new Vector2(Position.x, Position.y);
         }
 
         void Start()
@@ -81,8 +79,15 @@ namespace InnDeep.Game
             var step = Vector3.MoveTowards(Position, targetPos, fSpeed * Time.deltaTime);
             var frame = frustrum;
             frame.center = step;
-            frustrum = frame;
-            tCamera.position = step;
+            if (boundCheck(frame))
+            {
+                frustrum = frame;
+                tCamera.position = step;
+            }
+            else
+            {
+                targetPos = Position;
+            }
           
 
         }
@@ -93,7 +98,7 @@ namespace InnDeep.Game
                 return;
             var step = Mathf.Clamp(
                 Mathf.MoveTowards(Position.z, targetZoom, fSpeed * Time.deltaTime),
-                minZoom, maxZoom
+                MINZOOM, MAXZOOM
                 );
             tCamera.position = new Vector3(Position.x, Position.y, step);
         }
@@ -112,7 +117,8 @@ namespace InnDeep.Game
 #if UNITY_EDITOR
         void OnDrawGizmos()
         {
-
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(frustrum.center, frustrum.size);
         }
 #endif
     }

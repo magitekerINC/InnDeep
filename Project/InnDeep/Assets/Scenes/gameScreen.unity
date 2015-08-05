@@ -116,9 +116,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 146578, guid: a424d0b212fbf86489ff54ac96c43d41, type: 2}
-  rows: 50
+  rows: 80
   cols: 50
-  tileSheet: {fileID: 11400000, guid: 7c528ef1f5f0cfa4e9ad729416e9641d, type: 2}
+  groundLevel: 50
+  tileSheet:
+  - {fileID: 11400000, guid: 7c528ef1f5f0cfa4e9ad729416e9641d, type: 2}
+  - {fileID: 11400000, guid: 4985e048423110a4da0d1f345783eb5c, type: 2}
 --- !u!114 &1113435860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileSystem: {fileID: 1113435859}
-  gValues: {fileID: 0}
+  cControls: {fileID: 1840391352}
 --- !u!4 &1113435861
 Transform:
   m_ObjectHideFlags: 0
@@ -139,7 +142,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1113435858}
   m_LocalRotation: {x: .408217937, y: -.234569728, z: .109381676, w: .875426054}
-  m_LocalPosition: {x: .00233896077, y: 2.25, z: -.00405117869}
+  m_LocalPosition: {x: -6.07999992, y: 33.6300011, z: -.00405117869}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -216,6 +219,7 @@ GameObject:
   - 92: {fileID: 1840391349}
   - 124: {fileID: 1840391348}
   - 81: {fileID: 1840391347}
+  - 114: {fileID: 1840391352}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -261,7 +265,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: .300000012
-  far clip plane: 1000
+  far clip plane: 11
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -284,8 +288,26 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1840391346}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 19.1000004, y: 25.8999996, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!114 &1840391352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1840391346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cf72786b88ac984492d3bc6cbc20c06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frustrum:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  fSpeed: 10

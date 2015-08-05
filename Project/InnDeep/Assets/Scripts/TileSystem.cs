@@ -59,7 +59,7 @@ namespace InnDeep.Game
 
         public void StartTileSystem()
         {
-
+            SetupTiles();
         }
 
         public void LoadTileSystem()
@@ -70,6 +70,7 @@ namespace InnDeep.Game
         #region Tile Functions
         private void SetupTiles()
         {
+            tiles = new List<SpriteRenderer>(cols * rows);
             tileData = new TileData[cols, rows];
             var pos = new Vector3(tileArea.xMin, tileArea.yMin);
 
